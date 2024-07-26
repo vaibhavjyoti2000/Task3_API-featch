@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Json Data in Table format</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      tr:hover {
+        background-color: coral;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="data"></div>
+    <br />
+
+    <button onclick="loadJsonData()">Show Data</button><br />
+
+    <table class="table bordered">
+      <tr>
+        <th>UserId</th>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Body</th>
+      </tr>
+      <tbody id="result"></tbody>
+    </table>
+
+    <script>
+      function loadJsonData() {
+        var server = new XMLHttpRequest();
+        server.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            var data = JSON.parse(this.responseText);
+            data.forEach((val) => {
+              document.querySelector("#result").innerHTML += `
+                        <tr>
+                            <td>${val.UserId}</td>
+                            <td>${val.Id}</td>
+                            <td>${val.Title}</td>
+                            <td>${val.Body}</td>
+                        </tr>
+                        `;
+            });
+          }
+        };
+        server.open("GET", "https://jsonplaceholder.typicode.com/posts", true);
+        server.send();
+      }
+    </script>
+  </body>
+</html>
